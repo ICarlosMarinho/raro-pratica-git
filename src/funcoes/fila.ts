@@ -37,14 +37,20 @@ export function leArquivo(): Promise<string> {
   return resultado;
 }
 
-export async function escreveArquivo(texto: string, callback): Promise<void> {
-  writeFile(ARQUIVO_DE_FILA, texto, "utf8", function (err) {
-    if (err) {
-      return callback(err, null);
-    }
+export function escreveArquivo(texto: string): Promise<void> {
+  let resultado: Promise<void>;
 
-    callback();
+  writeFile(ARQUIVO_DE_FILA, texto, "utf8", function (err) {
+    resultado = new Promise((resolve, reject) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
   });
+
+  return resultado;
 }
 
 export async function escreveNaFila(texto: string): Promise<void> {
