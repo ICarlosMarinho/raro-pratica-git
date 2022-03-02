@@ -16,8 +16,8 @@ const ARQUIVO_DE_FILA = `${resolve(".")}/files/fila.txt`;
  * async/await.
  */
 
-export async function zerarAquivo(): Promise<void> {
-  return escreveArquivo("", () => {});
+export function zerarAquivo(): Promise<void> {
+  return escreveArquivo("");
 }
 
 export function leArquivo(): Promise<string> {
