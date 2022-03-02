@@ -66,26 +66,16 @@ export function escreveNaFila(texto: string): Promise<void> {
     .catch(console.log);
 }
 
-export async function consumirDaFila(): Promise<string> {
-  leArquivo(function (error, textoAtual) {
-    if (error) {
-      console.log(error);
-      return;
-    }
+export function consumirDaFila(): Promise<string | void> {
+  return leArquivo()
+    .then((textoAtual) => {
+      const [linhaConsumida, ...linhas] = textoAtual.split("\n");
 
-    console.log("texto encontrado anteriormente no arquivo", textoAtual);
-    const [linhaConsumida, ...linhas] = textoAtual.split("\n");
-    console.log("======== linha consumida", linhaConsumida);
+      console.log("texto encontrado anteriormente no arquivo", textoAtual);
+      console.log("======== linha consumida", linhaConsumida);
 
-    escreveArquivo(linhas.join("\n"), function (error) {
-      if (error) {
-        console.log(error);
-        return;
-      }
-
-      console.log("texto escrito no arquivo");
-    });
-  });
-
-  return "";
+      return escreveArquivo(linhas.join("\n"));
+    })
+    .then(() => console.log("texto escrito no arquivo"))
+    .catch(console.log);
 }
