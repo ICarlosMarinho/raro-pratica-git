@@ -49,29 +49,37 @@ export function escreveArquivo(texto: string): Promise<void> {
   return resultado;
 }
 
-export function escreveNaFila(texto: string): Promise<void> {
-  return leArquivo()
-    .then((textoAtual) => {
-      const novoTexto = textoAtual ? `${textoAtual}\n${texto}` : texto;
+export async function escreveNaFila(texto: string): Promise<void> {
+  try {
+    const textoAtual = await leArquivo();
+    const novoTexto = textoAtual ? `${textoAtual}\n${texto}` : texto;
 
-      console.log("texto encontrado anteriormente no arquivo", textoAtual);
+    console.log("texto encontrado anteriormente no arquivo", textoAtual);
 
-      return escreveArquivo(novoTexto);
-    })
-    .then(() => console.log("texto escrito no arquivo"))
-    .catch(console.log);
+    await escreveArquivo(novoTexto);
+
+    console.log("texto escrito no arquivo");
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-export function consumirDaFila(): Promise<string | void> {
-  return leArquivo()
-    .then((textoAtual) => {
-      const [linhaConsumida, ...linhas] = textoAtual.split("\n");
+export async function consumirDaFila(): Promise<string | null> {
+  try {
+    const textoAtual = await leArquivo();
+    const [linhaConsumida, ...linhas] = textoAtual.split("\n");
 
-      console.log("texto encontrado anteriormente no arquivo", textoAtual);
-      console.log("======== linha consumida", linhaConsumida);
+    console.log("texto encontrado anteriormente no arquivo", textoAtual);
+    console.log("======== linha consumida", linhaConsumida);
 
-      return escreveArquivo(linhas.join("\n"));
-    })
-    .then(() => console.log("texto escrito no arquivo"))
-    .catch(console.log);
+    await escreveArquivo(linhas.join("\n"));
+
+    console.log("texto escrito no arquivo");
+
+    return linhaConsumida;
+  } catch (error) {
+    console.log(error);
+
+    return null;
+  }
 }
