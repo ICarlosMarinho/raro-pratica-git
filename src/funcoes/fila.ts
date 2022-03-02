@@ -21,10 +21,8 @@ export function zerarAquivo(): Promise<void> {
 }
 
 export function leArquivo(): Promise<string> {
-  let resultado: Promise<string>;
-
-  readFile(ARQUIVO_DE_FILA, "utf8", (err, conteudo) => {
-    resultado = new Promise((resolve, reject) => {
+  let resultado = new Promise<string>((resolve, reject) => {
+    readFile(ARQUIVO_DE_FILA, "utf8", (err, conteudo) => {
       if (err) {
         reject(err);
       } else {
@@ -38,10 +36,8 @@ export function leArquivo(): Promise<string> {
 }
 
 export function escreveArquivo(texto: string): Promise<void> {
-  let resultado: Promise<void>;
-
-  writeFile(ARQUIVO_DE_FILA, texto, "utf8", function (err) {
-    resultado = new Promise((resolve, reject) => {
+  let resultado = new Promise<void>((resolve, reject) => {
+    writeFile(ARQUIVO_DE_FILA, texto, "utf8", function (err) {
       if (err) {
         reject(err);
       } else {
