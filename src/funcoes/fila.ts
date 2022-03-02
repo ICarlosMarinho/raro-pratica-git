@@ -53,25 +53,17 @@ export function escreveArquivo(texto: string): Promise<void> {
   return resultado;
 }
 
-export async function escreveNaFila(texto: string): Promise<void> {
-  leArquivo(function (error, textoAtual) {
-    if (error) {
-      console.log(error);
-      return;
-    }
+export function escreveNaFila(texto: string): Promise<void> {
+  return leArquivo()
+    .then((textoAtual) => {
+      const novoTexto = textoAtual ? `${textoAtual}\n${texto}` : texto;
 
-    console.log("texto encontrado anteriormente no arquivo", textoAtual);
-    const novoTexto = textoAtual ? `${textoAtual}\n${texto}` : texto;
+      console.log("texto encontrado anteriormente no arquivo", textoAtual);
 
-    escreveArquivo(novoTexto, function (error) {
-      if (error) {
-        console.log(error);
-        return;
-      }
-
-      console.log("texto escrito no arquivo");
-    });
-  });
+      return escreveArquivo(novoTexto);
+    })
+    .then(() => console.log("texto escrito no arquivo"))
+    .catch(console.log);
 }
 
 export async function consumirDaFila(): Promise<string> {
